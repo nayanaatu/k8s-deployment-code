@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deployment
+  labels:
+    app: wwa-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wwa-api  # Use a valid name, e.g., "wwa-api"
+  template:
+    metadata:
+      labels:
+        app: wwa-api  # Use a valid name, e.g., "wwa-api"
+    spec:
+      containers:
+        - name: wwa-api
+          image: naynnpn/wwa-backend-image:v1.0
+          imagePullPolicy: Always
+          env:
+            - name: "wwadb"
+              value: db-service
+            - name: MONGO_ROOT_USER
+              value: "shreyashettys202"
+            - name: MONGO_ROOT_PASSWORD
+              value: "dg3KtsSYXuSc0t5f"
+          command: ["npm", "start"]
+          #envFrom:
+          #  - configMapRef:
+          #      name: mongo-config
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  labels:
+    app: wwa-api
+spec:
+  selector:
+    app: wwa-api  # Use a valid name, e.g., "wwa-api"
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000

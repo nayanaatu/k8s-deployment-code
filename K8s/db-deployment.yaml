@@ -1,0 +1,46 @@
+iapiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: db-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      name: mongo
+  template:
+    metadata:
+      labels:
+        name: mongo
+        app: mongodb
+    spec:
+      containers:
+      - image: mongo:latest
+        name: mongo
+        ports:
+        - containerPort: 27017
+        volumeMounts:
+          - name: mongo-storage
+            mountPath: /data/db
+      volumes:
+        #- name: mongo-storage
+        #  hostPath:
+        #    path: /home/ubuntu/pv-data
+        - name: mongo-storage
+          persistentVolumeClaim:
+            claimName: database-persistent-volume-claim
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: db-service
+  labels:
+    name: mongo
+    app: mongodb
+spec:
+  selector:
+    name: mongo
+  type: ClusterIP
+  ports:
+    - name: db
+      port: 27017
+      targetPort: 27017
