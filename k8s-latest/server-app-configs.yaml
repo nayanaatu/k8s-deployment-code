@@ -4,7 +4,6 @@ metadata:
   name: server-side-configs
 data:
   PORT: "5000"
-  CLIENT: 192.168.49.2:30943
-  MONGODB_URL: mongodb://shreyashettys202:dg3KtsSYXuSc0t5f@mongodb:27017/wwadb
+  MONGODB_URL: mongodb://shreyashettys202:dg3KtsSYXuSc0t5f@mongo-db:27017/wwadb
   
   
